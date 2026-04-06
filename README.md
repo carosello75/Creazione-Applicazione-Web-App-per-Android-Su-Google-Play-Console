@@ -27,7 +27,7 @@ Il file **[GUIDA-PROGETTO.md](GUIDA-PROGETTO.md)** è il **corso completo** test
 ## Avvio in 3 passi
 
 1. **Clona** il repository (o scarica ZIP da GitHub).
-2. Apri la cartella in **Android Studio** (`File → Open`, scegli la root dove c’è `settings.gradle.kts`).
+2. Se non hai ancora l’IDE: **[Scarica Android Studio (italiano)](https://developer.android.com/studio?utm_source=android-studio&hl=it)** — poi apri la cartella in Android Studio (`File → Open`, root con `settings.gradle.kts`).
 3. **Run** su emulatore o dispositivo con USB debugging.
 
 Da terminale, nella root del progetto:

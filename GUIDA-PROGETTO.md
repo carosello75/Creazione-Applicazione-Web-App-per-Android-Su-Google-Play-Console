@@ -6,7 +6,13 @@ Questa cartella è un’**app Android nativa** (Kotlin + layout XML). Non è un 
 
 ## Parte 1 — Come si crea e si apre l’app
 
-1. Installa **Android Studio** (versione recente).
+### Dove scaricare e aggiornare Android Studio (sito ufficiale)
+
+Vai sulla pagina ufficiale in italiano: **[Scarica Android Studio e strumenti per app](https://developer.android.com/studio?utm_source=android-studio&hl=it)**.
+
+**Quando usarla:** per **scaricare** o **aggiornare** l’IDE, leggere i **requisiti di sistema**, consultare **note di rilascio** e guide introduttive (“Inizia a utilizzare Android Studio”, “Crea la tua prima app”). Non serve aprirla ogni giorno: per scrivere codice usi l’app **Android Studio** installata sul Mac; il sito è il punto di riferimento quando installi da zero, cambi computer o vuoi l’ultima versione stabile.
+
+1. Installa **Android Studio** (versione recente) dal link sopra — su **Mac con chip Apple** scegli il `.dmg` **ARM**; su **Mac Intel** il `.dmg` **64 bit** (non ARM).
 2. **Apri** la cartella del progetto: `File → Open` e scegli la cartella `App base` (quella che contiene `settings.gradle.kts`).
 3. Attendi il sync di Gradle; se manca l’SDK, Android Studio ti guida a scaricarlo.
 4. Collega un telefono con **debug USB** oppure avvia un **emulatore**.
