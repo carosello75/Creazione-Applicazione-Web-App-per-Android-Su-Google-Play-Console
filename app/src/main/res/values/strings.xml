@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">App Base</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_contact">Contatti</string>
+    <string name="nav_strumenti">Strumenti</string>
+    <string name="nav_info">Info</string>
+    <string name="nav_altro">Altro</string>
+
+    <string name="hint_edit_home">Modifica contenuto in HomeFragment.kt e/o layout dedicato.</string>
+    <string name="hint_edit_contact">Modifica contenuto in ContactFragment.kt (es. email, form).</string>
+    <string name="hint_edit_strumenti">Modifica contenuto in StrumentiFragment.kt.</string>
+    <string name="hint_edit_info">Modifica contenuto in InfoFragment.kt.</string>
+    <string name="hint_edit_altro">Modifica contenuto in AltroFragment.kt.</string>
+</resources>

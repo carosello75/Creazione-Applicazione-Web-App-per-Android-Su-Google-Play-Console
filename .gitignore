@@ -1,0 +1,25 @@
+# Android / Gradle
+.gradle/
+build/
+**/build/
+local.properties
+*.iml
+.idea/
+.cxx/
+.externalNativeBuild/
+
+# APK / AAB (opzionale: togli queste righe se vuoi versionare gli artefatti)
+*.apk
+*.aab
+*.ap_
+
+# Keystore (non committare mai)
+*.jks
+*.keystore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
