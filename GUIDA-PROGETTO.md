@@ -127,7 +127,7 @@ App base/
 │   └── assets/                      # (opzionale) www per WebView
 ├── app/build.gradle.kts             # dipendenze, versione, applicationId
 ├── keystore.properties.example      # modello per firma release (copia → keystore.properties, non su Git)
-└── GUIDA-PROGETTO.md                # questa guida
+└── GUIDA-PROGETTO.md                # questa guida (incl. Parte 9 Git/GitHub)
 ```
 
 Tieni questo file nel repo: ogni nuova app può partire da questa base e questa mappa ti ricorda **dove** mettere stile, logica, web opzionale, API e database.
@@ -238,3 +238,163 @@ Per la **prima** volta conviene spesso **test interno**: aggiungi email tester, 
 ---
 
 Per dettagli che cambiano nel tempo (policy Google, nuovi campi in console), usa sempre la **documentazione ufficiale** Play Console e Android Developers collegata dalla stessa console.
+
+---
+
+## Parte 9 — Git e GitHub: account, login, token e `git push`
+
+Questa parte riassume **come tenere il progetto su GitHub** dal Mac (terminale): creazione account, repository, autenticazione (non si usa la password dell’account per `git push`), comandi usati ogni giorno.
+
+### Creare un **nuovo account GitHub**
+
+1. Vai su **[https://github.com/signup](https://github.com/signup)**.
+2. Scegli **username**, **email**, **password** (quella del sito GitHub: serve per entrare nel browser, **non** per Git da terminale in modo diretto).
+3. Verifica l’email se richiesto.
+
+Dopo la registrazione puoi **creare un repository** vuoto: **[https://github.com/new](https://github.com/new)** → nome repo (es. `mia-app`) → **Create repository**. GitHub ti mostrerà i comandi suggeriti; in pratica ti servirà l’URL tipo `https://github.com/TUO_USER/mia-app.git`.
+
+---
+
+### Cosa installare sul Mac
+
+- **Git** (spesso già presente). Verifica: `git --version`
+- Opzionale: **[GitHub CLI](https://cli.github.com/)** (`gh`) per login guidato.
+
+---
+
+### Collegare la cartella del progetto a GitHub (prima volta)
+
+Nella **root** del progetto (dove c’è `settings.gradle.kts`):
+
+```bash
+cd "/percorso/della/cartella/progetto"
+git status
+```
+
+Se il progetto **non** è ancora un repo:
+
+```bash
+git init
+git add -A
+git commit -m "Primo commit"
+```
+
+Collega il **remote** (sostituisci `TUO_USER` e `NOME_REPO`):
+
+```bash
+git remote add origin https://github.com/TUO_USER/NOME_REPO.git
+git branch -M main
+git push -u origin main
+```
+
+Se `origin` esiste già ma punta altrove:
+
+```bash
+git remote set-url origin https://github.com/TUO_USER/NOME_REPO.git
+```
+
+Controlla:
+
+```bash
+git remote -v
+```
+
+---
+
+### Login da terminale: **non** la password del sito
+
+GitHub **non** accetta più la password dell’account per `git push` / `git pull` in HTTPS. Devi usare:
+
+- un **Personal Access Token (PAT)** al posto della password, **oppure**
+- **SSH** con chiave caricata su GitHub.
+
+#### Token (consigliato per iniziare)
+
+1. Nel browser, entra su GitHub con **l’account che deve pushare** sul repo.
+2. Apri **[https://github.com/settings/tokens](https://github.com/settings/tokens)**.
+3. **Generate new token** → **Generate new token (classic)**.
+4. Spunta almeno **`repo`** (accesso ai repository).
+5. **Generate** e **copia** il token (stringa lunga, spesso inizia con `ghp_`). Salvalo in un posto sicuro: non lo rivedi intero dopo.
+
+Quando dal terminale fai `git push` e compare:
+
+```text
+Username for 'https://github.com':
+Password for 'https://...':
+```
+
+- **Username:** il tuo **username GitHub** (es. `carosello75`).
+- **Password:** incolla il **token** (non la password con cui entri su github.com). Mentre incolli non vedi caratteri: è normale.
+
+Messaggio **`Invalid username or token. Password authentication is not supported`**: quasi sempre significa che hai messo la **password del sito** invece del **token**, oppure il token è sbagliato/scaduto.
+
+#### Se Git usa sempre l’account **sbagliato** (es. 403 “denied to altro_utente”)
+
+Su Mac le credenziali restano nel **Portachiavi**. Per far ripartire la richiesta utente/token:
+
+```bash
+printf "host=github.com\nprotocol=https\n\n" | git credential-osxkeychain erase
+```
+
+Poi di nuovo `git push` e inserisci **username** e **token** dell’account corretto.
+
+In **Accesso Portachiavi** puoi anche cercare `github` e eliminare le voci obsolete.
+
+---
+
+### Comandi che userai spesso (dopo le modifiche al codice)
+
+```bash
+cd "/percorso/del/progetto"
+git status
+git add -A
+git commit -m "Breve descrizione di cosa hai cambiato"
+git push
+```
+
+- **`git status`** — cosa è modificato / in attesa di commit.  
+- **`git add -A`** — mette in stage tutte le modifiche (o usa `git add file` per file singoli).  
+- **`git commit -m "..."`** — crea uno snapshot locale con messaggio.  
+- **`git push`** — invia i commit sul branch remoto (es. `main` su GitHub).
+
+Se è il primo push del branch:
+
+```bash
+git push -u origin main
+```
+
+---
+
+### Clonare il repo su un altro computer
+
+```bash
+git clone https://github.com/TUO_USER/NOME_REPO.git
+cd NOME_REPO
+```
+
+Poi apri la cartella in Android Studio.
+
+---
+
+### Cose da **non** committare (già coperte da `.gitignore` in questo template)
+
+- `local.properties` (percorso SDK sul tuo Mac)  
+- cartelle `build/`, `.gradle/`  
+- **`keystore.properties`**, file **`.jks` / `.keystore`**, token o password in chiaro  
+
+Se per sbaglio committi un segreto, **revoca** il token su GitHub e ruota password/keystore secondo le procedure di sicurezza.
+
+---
+
+### Riepilogo errori comuni
+
+| Messaggio | Cosa fare |
+|-----------|-----------|
+| `403` / `denied to ALTRO_UTENTE` | Stai autenticato come utente GitHub senza permesso su quel repo: cancella credenziali salvate, `git push` di nuovo con utente + token **corretti**, oppure aggiungi collaboratore sul repo. |
+| `403` / `denied to STESSO_UTENTE` | Token senza permessi (es. fine-grained senza “Contents: Read and write”): ricrea token **classic** con **`repo`**. |
+| `Invalid username or token` | Usa il **PAT** come password, non la password dell’account GitHub. |
+| `remote: Repository not found` | URL sbagliato, repo privato senza accesso, o nome utente/repo errato. |
+
+---
+
+Link utili: [Iscrizione GitHub](https://github.com/signup) · [Nuovo repository](https://github.com/new) · [Token personali](https://github.com/settings/tokens) · [Documentazione Git](https://git-scm.com/doc)

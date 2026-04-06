@@ -18,8 +18,9 @@ Repository di **base** per un’app Android nativa (Kotlin): menu in basso (Home
 | Database locale e cloud | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — Parte 6 |
 | Schema cartelle e ordine di lavoro | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — Parte 7 e riepilogo |
 | **AAB / bundle, firma, Play Console, nuova app** | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — **Parte 8** |
+| **Git / GitHub: account, token, login, `git push`** | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — **Parte 9** |
 
-Il file **[GUIDA-PROGETTO.md](GUIDA-PROGETTO.md)** è il **corso completo** testuale: tienilo come riferimento mentre modifichi il progetto. Per pubblicare: **Parte 8** + file esempio **`keystore.properties.example`** (non committare `keystore.properties` né il `.jks`).
+Il file **[GUIDA-PROGETTO.md](GUIDA-PROGETTO.md)** è il **corso completo** testuale: tienilo come riferimento mentre modifichi il progetto. Per pubblicare: **Parte 8** + file esempio **`keystore.properties.example`** (non committare `keystore.properties` né il `.jks`). Per salvare il codice su GitHub: **Parte 9**.
 
 ---
 
