@@ -13,9 +13,10 @@ local.properties
 *.aab
 *.ap_
 
-# Keystore (non committare mai)
+# Keystore e segreti firma (non committare mai)
 *.jks
 *.keystore
+keystore.properties
 
 # OS
 .DS_Store

@@ -17,8 +17,9 @@ Repository di **base** per un’app Android nativa (Kotlin): menu in basso (Home
 | Backend, API, JavaScript | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — Parte 5 |
 | Database locale e cloud | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — Parte 6 |
 | Schema cartelle e ordine di lavoro | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — Parte 7 e riepilogo |
+| **AAB / bundle, firma, Play Console, nuova app** | [GUIDA-PROGETTO.md](GUIDA-PROGETTO.md) — **Parte 8** |
 
-Il file **[GUIDA-PROGETTO.md](GUIDA-PROGETTO.md)** è il **corso completo** testuale: tienilo come riferimento mentre modifichi il progetto.
+Il file **[GUIDA-PROGETTO.md](GUIDA-PROGETTO.md)** è il **corso completo** testuale: tienilo come riferimento mentre modifichi il progetto. Per pubblicare: **Parte 8** + file esempio **`keystore.properties.example`** (non committare `keystore.properties` né il `.jks`).
 
 ---
 
@@ -52,11 +53,12 @@ L’APK debug si trova in `app/build/outputs/apk/debug/`.
 
 ---
 
-## Google Play Console
+## Google Play Console e bundle (AAB)
 
-- Cambia **`applicationId`** in un identificativo univoco prima della pubblicazione.
-- Per lo store serve **AAB** firmato (`./gradlew bundleRelease`), scheda app, eventuale privacy policy, screenshot.
-- Questo repo documenta la **base codice**; la gestione release ufficiale è su [Google Play Console](https://play.google.com/console).
+- Guida passo-passo: **[GUIDA-PROGETTO.md — Parte 8](GUIDA-PROGETTO.md#parte-8--bundle-aab-per-google-play-firma-release-e-play-console)** (nuova app in console, generazione **`.aab`**, firma, caricamento release).
+- Console: [https://play.google.com/console](https://play.google.com/console)
+- Cambia **`applicationId`** e incrementa **`versionCode`** prima di ogni upload.
+- Esempio configurazione segreti firma (solo locale): **`keystore.properties.example`** → copia come `keystore.properties` (è in `.gitignore`).
 
 ---
 
