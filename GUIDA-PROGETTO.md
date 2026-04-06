@@ -404,3 +404,87 @@ Se per sbaglio committi un segreto, **revoca** il token su GitHub e ruota passwo
 ---
 
 Link utili: [Iscrizione GitHub](https://github.com/signup) · [Nuovo repository](https://github.com/new) · [Token personali](https://github.com/settings/tokens) · [Documentazione Git](https://git-scm.com/doc)
+
+---
+
+## Parte 10 — “Localhost” e porta locale: Mac, Windows e app Android
+
+### Prima cosa da capire
+
+Un’**app Android nativa** (come questa base) **non** si apre nel browser con `http://localhost:3000` come un sito web. Per vederla in locale usi **Android Studio → Run** su **emulatore** o **telefono** (USB / Wi‑Fi).
+
+La **porta localhost** entra in gioco quando:
+
+- sul **PC o Mac** fai girare un **server di sviluppo** (API REST, sito in HTML, Node, PHP, Python, ecc.) e vuoi che **l’app sul telefono/emulatore** lo raggiunga;
+- oppure usi una **WebView** che carica una pagina servita da quel computer.
+
+---
+
+### Emulatore Android: `localhost` del computer ≠ `localhost` dell’emulatore
+
+Dentro l’emulatore, `127.0.0.1` o `localhost` indicano **l’emulatore stesso**, non il tuo Mac o PC.
+
+Per contattare il **server in ascolto sul computer ospite** (Mac o Windows), usa l’alias speciale dell’emulatore:
+
+| Situazione | URL da usare nell’app (es. Retrofit, WebView) |
+|------------|-----------------------------------------------|
+| Server sul computer sulla porta **8080** | `http://10.0.2.2:8080/` |
+| API sulla porta **3000** | `http://10.0.2.2:3000/` |
+
+`10.0.2.2` è documentato da Google come bridge verso la macchina host **solo in emulatore**.
+
+**HTTPS** con certificati autofirmati in locale può dare errori: in sviluppo spesso si usa **HTTP** solo in debug (vedi sotto *cleartext*).
+
+---
+
+### Telefono Android fisico (cavo USB)
+
+Il telefono **non** vede `localhost` del tuo computer.
+
+1. **Stessa rete Wi‑Fi:** sul Mac/PC avvia il server in ascolto su `0.0.0.0` (tutte le interfacce), non solo su `127.0.0.1` se il tool lo richiede.  
+2. Scopri l’**IP locale** del computer:  
+   - **macOS:** Terminale → `ipconfig getifaddr en0` (spesso Wi‑Fi) oppure **Impostazioni di sistema → Rete**.  
+   - **Windows:** `ipconfig` in Prompt/PowerShell → cerca **Indirizzo IPv4** della scheda Wi‑Fi/Ethernet (es. `192.168.1.10`).  
+3. Nell’app usa ad esempio: `http://192.168.1.10:8080/` (sostituisci IP e porta).
+
+**Firewall:** su **Windows** consenti la porta in “Windows Defender Firewall” se il telefono non raggiunge il server.
+
+**Alternativa USB — `adb reverse`:** con il telefono collegato e debug USB attivo:
+
+```bash
+adb reverse tcp:8080 tcp:8080
+```
+
+Poi nell’app (solo su quel dispositivo collegato) puoi usare `http://127.0.0.1:8080/` come se il server fosse sul telefono. Utile per evitare di cercare l’IP LAN.
+
+---
+
+### Avviare un server di prova sul computer (stessa idea su Mac e Windows)
+
+Esempi rapidi **dopo essersi spostati nella cartella** dei file da servire (Terminal su Mac, Prompt/PowerShell su Windows):
+
+| Strumento | Comando (Mac e Windows, se installato) |
+|-----------|------------------------------------------|
+| **Python 3** | `python3 -m http.server 8080` oppure `py -m http.server 8080` (Windows) |
+| **Node.js** | `npx --yes serve -l 8080` |
+
+Apri dal browser del computer: `http://localhost:8080` per verificare.  
+Dall’**emulatore** Android usa `http://10.0.2.2:8080`.
+
+---
+
+### HTTP in chiaro (solo sviluppo)
+
+Le app moderne spesso bloccano **HTTP** non cifrato. Per **debug** su un dominio/IP locale può servire in `AndroidManifest.xml` sull’`<application>` l’attributo `android:usesCleartextTraffic="true"` **solo in build di test** — non è adatto alla pubblicazione Play Store senza motivo e policy adeguate. Per la produzione usa **HTTPS**.
+
+---
+
+### Riepilogo
+
+| Dove gira l’app | Come raggiungere il server sul Mac/PC |
+|-----------------|----------------------------------------|
+| **Emulatore** | `http://10.0.2.2:PORTA` |
+| **Telefono (Wi‑Fi)** | `http://IP_LAN_DEL_COMPUTER:PORTA` |
+| **Telefono (USB + reverse)** | `adb reverse tcp:PORTA tcp:PORTA` poi `http://127.0.0.1:PORTA` |
+
+**Mac** e **Windows** differiscono soprattutto per **come trovi l’IP** (`ipconfig` / impostazioni rete) e per il **firewall**; i comandi tipo **Python** / **Node** sono gli stessi se installati.
